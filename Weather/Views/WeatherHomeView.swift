@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  WeatherHomeView.swift
 //  Weather
 //
 //  Created by Junho Yoon on 9/13/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct WeatherHomeView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 20) {
@@ -29,5 +29,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    WeatherHomeView()
 }

@@ -15,3 +15,5 @@ struct City: Codable {
     var country: String
     var coord: Coordinate
 }
+
+extension City: Identifiable { }

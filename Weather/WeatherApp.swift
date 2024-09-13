@@ -11,13 +11,16 @@ import SwiftUI
 struct WeatherApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            if let jsonData = FileService.shared.loadJSONFromFile(filename: "citylist") {
+//                if let cities = FileService.shared.parse(data: jsonData, modelType: [City].self) {
+//                   
+//                    SearchCitiyView(cities: cities)
+//                        .padding()
+//                }
+//            }
+            WeatherHomeView()
                 .onAppear() {
-                    if let jsonData = FileService.shared.loadJSONFromFile(filename: "citylist") {
-                        if let cities = FileService.shared.parse(data: jsonData, modelType: [City].self) {
-                           
-                        }
-                    }
+                   
                 }
         }
     }
