@@ -20,7 +20,6 @@ class Coordinator: CoordinatorTransitable {
           return buildScene(scene: initialScene)
       }
     
-    
     func buildScene(scene: AppScene) -> some View {
         print("buildScene \(scene)")
         switch scene {

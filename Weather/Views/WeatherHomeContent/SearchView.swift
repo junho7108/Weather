@@ -36,5 +36,6 @@ struct SearchView: View {
                    .background(Color(.systemGray6))
                    .cornerRadius(12)
                }
+        .frame(height: 40)
     }
 }

@@ -131,6 +131,6 @@ extension WeatherHomeViewModel {
                                                               minTemp: $0.value.min) }
             .sorted(by: { $0.date < $1.date })
 
-        return result
+        return result.count > 5 ? Array(result[0 ..< 5]) : result
     }
 }

@@ -18,7 +18,12 @@ struct SearchCitiyView: View {
                 .ignoresSafeArea()
             
             VStack {
+            
                 TextField("search", text: $searchText)
+                    .onChange(of: searchText) { newValue, _  in
+                        viewModel.input.textDidChange
+                            .send(newValue)
+                    }
                     .padding(.leading, 60)
                     .frame(height: 40)
                     .background(Color(.systemGray6))
@@ -34,19 +39,15 @@ struct SearchCitiyView: View {
                     .cornerRadius(12)
                     .padding(.bottom)
                 
-                if let cityList = viewModel.output.cityList {
+                if let cityList = viewModel.output.cityList, !cityList.isEmpty {
                     
                         List(cityList) { city in
                             
                             Button {
                                 withAnimation(nil) {
-                                    viewModel.coordinator.pop()
-//                                    viewModel.coordinator.push(.weatherHome(coord: city.coord))
+                                    viewModel.coordinator.push(.weatherHome(coord: city.coord))
                                 }
-                                
-                                
                             } label: {
-                                
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(city.name)
                                         .font(.system(size: 16))
@@ -56,16 +57,24 @@ struct SearchCitiyView: View {
                                         .font(.system(size: 12))
                                 }
                             }
-                            
                         }
-                        .listRowBackground(Color.blue.opacity(0.4))
-                        .background(Color.blue.opacity(0.4))
+                        .cornerRadius(12)
                         .listStyle(.plain)
                         .scrollIndicators(.hidden)
+                } else {
+                    
+                    Text("검색 된 도시정보가 없습니다.")
+                        .padding(.top)
+                        .foregroundColor(Color.black.opacity(0.8))
+                        .font(.system(size: 16))
+                    
+                    Spacer()
                 }
             }
+            .background(Color.clear)
             .padding([.top, .leading, .trailing])
-            .background(.clear)
+          
         }
+        .background(Color.clear)
     }
 }
