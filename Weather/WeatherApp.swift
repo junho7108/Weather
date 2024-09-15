@@ -6,12 +6,25 @@
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct WeatherApp: App {
+    @StateObject private var coordinator: Coordinator = Coordinator(
+        .weatherHome(coord: GeoCoordinate(lat: 36.783611,
+                                          lon: 127.004173))
+    )
+
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            
+            NavigationStack(path: $coordinator.path) {
+                coordinator.buildInitialScene()
+                    .navigationDestination(for: AppScene.self) { scene in
+                        coordinator.buildScene(scene: scene)
+                    }
+            }
         }
     }
 }
