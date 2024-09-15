@@ -8,7 +8,7 @@
 import Foundation
 
 struct WeatherResponse: Codable {
-    let coord: Coordinate
+    let coord: GeoCoordinate
     let weather: [Weather]
     let main: WeatherDetail
     let wind: Wind

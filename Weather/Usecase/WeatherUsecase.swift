@@ -18,4 +18,8 @@ struct WeatherUsecase {
     func fetchWeather(lat: Double, lon: Double) -> AnyPublisher<WeatherResponse, Error> {
         return repository.fetchWeather(lat: lat, lon: lon)
     }
+    
+    func forecaseWeather(lat: Double, lon: Double) -> AnyPublisher<ForecaseWeatherResponse, Error> {
+        return repository.forecaseWeather(lat: lat, lon: lon)
+    }
 }

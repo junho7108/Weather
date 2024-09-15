@@ -13,6 +13,7 @@ struct Const {
     
     struct ApiPath {
         static let fetchWeather = "/data/2.5/weather"
+        static let forecastWeather = "/data/2.5/forecast"
     }
     
     struct Key {

@@ -1,20 +1,26 @@
-    //
-    //  HourlyWeatherView.swift
-    //  Weather
-    //
-    //  Created by Junho Yoon on 9/13/24.
-    //
+//
+//  HourlyWeatherView.swift
+//  Weather
+//
+//  Created by Junho Yoon on 9/13/24.
+//
 
-    import SwiftUI
+import SwiftUI
 
-    struct HourlyWeatherView: View {
-        var body: some View {
+struct HourlyWeatherView: View,
+                          DateFormatterProtocol {
+    
+    @StateObject var viewModel: WeatherHomeViewModel
+    
+    var body: some View {
+        if let list = viewModel.output.threeHourlyForecast {
+            
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(.blue.opacity(0.3))
                 
                 VStack(alignment: .leading) {
-                    Text("돌풍의 풍속은 최대 4m/s입니다.")
+                    Text("3시간 간격으로 2일간의 기온 표시")
                         .font(.system(size: 12))
                         .padding(.leading, 8)
                     
@@ -22,8 +28,10 @@
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(0 ..< 10) { _ in
-                                createHourlyWeahterView(icon: "01d", hour: "오전 11시", temp: "-7")
+                            ForEach(list) { forecast in
+                                createHourlyWeahterView(icon: forecast.weather.first!.icon,
+                                                        hour: formatDateString(forecast.date) ?? forecast.date,
+                                                        temp: forecast.main.temp.kelvinToCelsiusString())
                             }
                         }
                     }
@@ -31,22 +39,25 @@
                 .padding(8)
             }
             .fixedSize(horizontal: false, vertical: true)
+            
         }
     }
+}
 
-    private extension HourlyWeatherView {
-        func createHourlyWeahterView(icon: String, hour: String, temp: String) -> some View {
-            VStack {
-                Text(hour)
-                    .font(.system(size: 12))
-                
-                Image("01d")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 32)
-                
-                Text(temp)
-                    .font(.system(size: 12))
-            }
+private extension HourlyWeatherView {
+    func createHourlyWeahterView(icon: String, hour: String, temp: String) -> some View {
+        VStack {
+            Text(hour)
+                .font(.system(size: 12))
+            
+            Image(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 32)
+            
+            Text(temp)
+                .font(.system(size: 12))
         }
+        .padding(.trailing, 4)
     }
+}

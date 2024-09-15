@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Coordinate: Codable {
+struct GeoCoordinate: Codable, Identifiable {
     let lat: Double
     let lon: Double
+    
+    var id: UUID? = UUID()
 }
-
-
 

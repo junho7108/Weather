@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SearchView: View {
+    
+    @StateObject var viewModel: WeatherHomeViewModel
+    
     @State var searchText: String = ""
     
     var body: some View {
@@ -26,6 +29,5 @@ struct SearchView: View {
                 }
             )
             .cornerRadius(12)
-
     }
 }

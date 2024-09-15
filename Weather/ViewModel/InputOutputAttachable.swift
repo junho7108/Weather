@@ -20,3 +20,7 @@ protocol InputOutputAttachable {
 protocol DefaultInput {
     var fetchData: PassthroughSubject<Void, Never> { get set }
 }
+
+protocol WeatherInput {
+    var fetchData: PassthroughSubject<GeoCoordinate, Never> { get set }
+}

@@ -8,12 +8,10 @@
 import Foundation
 
 struct City: Codable {
-    struct Coordinate: Codable { var lat: Double; var lon: Double }
-    
     let id: Int
     let name: String
     let country: String
-    let coord: Coordinate
+    let coord: GeoCoordinate
 }
 
 extension City: Identifiable { }

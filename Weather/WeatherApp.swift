@@ -25,6 +25,9 @@ struct WeatherApp: App {
             let viewModel = WeatherHomeViewModel(usecase: usecase)
             
             WeatherHomeView(viewModel: viewModel)
+                .onAppear {
+                    viewModel.input.fetchData.send(GeoCoordinate(lat: 36.783611, lon: 127.004173))
+                }
         }
     }
 }
