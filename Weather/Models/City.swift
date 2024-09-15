@@ -10,10 +10,10 @@ import Foundation
 struct City: Codable {
     struct Coordinate: Codable { var lat: Double; var lon: Double }
     
-    var id: Int
-    var name: String
-    var country: String
-    var coord: Coordinate
+    let id: Int
+    let name: String
+    let country: String
+    let coord: Coordinate
 }
 
 extension City: Identifiable { }

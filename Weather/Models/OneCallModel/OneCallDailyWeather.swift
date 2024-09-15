@@ -1,5 +1,5 @@
 //
-//  DailyWeather.swift
+//  OneCallDailyWeather.swift
 //  Weather
 //
 //  Created by Junho Yoon on 9/13/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DailyWeather: WeatherDto {
+struct OneCallDailyWeather: OneCallWeatherDto {
    
     var temp: DailyTemp
     var feelsLike: DailyFeelsLike
@@ -24,7 +24,7 @@ struct DailyWeather: WeatherDto {
     var windSpeed: Double
     var windDeg: Int
     var windGust: Double
-    var weather: [WeatherDetail]
+    var weather: [OneCallWeatherDetail]
 }
 
 struct DailyTemp: Codable {

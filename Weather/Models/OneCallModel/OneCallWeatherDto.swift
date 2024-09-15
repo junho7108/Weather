@@ -1,5 +1,5 @@
 //
-//  WeatherDto.swift
+//  OneCallWeatherDto.swift
 //  Weather
 //
 //  Created by Junho Yoon on 9/13/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol WeatherDto: Codable {
+protocol OneCallWeatherDto: Codable {
     
     associatedtype Temp: Decodable
     associatedtype FeelsLike: Decodable
@@ -30,12 +30,12 @@ protocol WeatherDto: Codable {
     var windDeg: Int { get set }
     var windGust: Double { get set }
     
-    var weather: [WeatherDetail] { get set }
+    var weather: [OneCallWeatherDetail] { get set }
 }
 
 //MARK: - Extensions
 
-extension WeatherDto {
+extension OneCallWeatherDto {
     init(from decoder: any Decoder) throws {
         try self.init(from: decoder)
         
@@ -58,7 +58,7 @@ extension WeatherDto {
         self.windDeg = try values.decode(Int.self, forKey: .windDeg)
         self.windGust = try values.decode(Double.self, forKey: .windGust)
         
-        self.weather = try values.decode([WeatherDetail].self, forKey: .weather)
+        self.weather = try values.decode([OneCallWeatherDetail].self, forKey: .weather)
     }
 }
 

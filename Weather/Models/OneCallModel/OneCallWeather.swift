@@ -1,5 +1,5 @@
 //
-//  Weather.swift
+//  OneCallWeather.swift
 //  Weather
 //
 //  Created by Junho Yoon on 9/13/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Weather: WeatherDto {
+struct OneCallWeather: OneCallWeatherDto {
     typealias Temp = Double
     typealias FeelsLike = Double
     
@@ -26,5 +26,5 @@ struct Weather: WeatherDto {
     var windSpeed: Double
     var windDeg: Int
     var windGust: Double
-    var weather: [WeatherDetail]
+    var weather: [OneCallWeatherDetail]
 }
