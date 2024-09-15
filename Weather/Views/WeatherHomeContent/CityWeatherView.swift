@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CityWeatherView: View {
-    @StateObject var viewModel: WeatherHomeViewModel
+    @ObservedObject var viewModel: WeatherHomeViewModel
     
     var body: some View {
         

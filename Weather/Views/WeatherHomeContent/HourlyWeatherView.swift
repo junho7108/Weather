@@ -10,7 +10,7 @@ import SwiftUI
 struct HourlyWeatherView: View,
                           DateFormatterProtocol {
     
-    @StateObject var viewModel: WeatherHomeViewModel
+    @ObservedObject var viewModel: WeatherHomeViewModel
     
     var body: some View {
         if let list = viewModel.output.threeHourlyForecast {

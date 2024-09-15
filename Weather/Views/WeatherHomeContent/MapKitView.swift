@@ -9,12 +9,12 @@ import SwiftUI
 import MapKit
 
 struct MapKitView: View {
-    @StateObject var viewModel: WeatherHomeViewModel
+    @ObservedObject var viewModel: WeatherHomeViewModel
     
     @State private var region: MKCoordinateRegion
     
     init(viewModel: WeatherHomeViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = ObservedObject(wrappedValue: viewModel)
         
         let initialCoord = CLLocationCoordinate2D(latitude: viewModel.output.response?.coord.lat ?? 0,
                                                   longitude: viewModel.output.response?.coord.lon ?? 0)

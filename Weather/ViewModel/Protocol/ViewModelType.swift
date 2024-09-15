@@ -9,6 +9,7 @@ import Combine
 
 protocol ViewModelType: ObservableObject,
                         InputOutputAttachable,
+                        DependeciesAttachable,
                         ViewModelCoordinatable {
     
     var cancellables: Set<AnyCancellable> { get }

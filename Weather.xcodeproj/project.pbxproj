@@ -58,6 +58,8 @@
 		12C9032F2C972784003F113E /* CoordinatorTransitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C9032E2C972784003F113E /* CoordinatorTransitable.swift */; };
 		12C903312C972C4D003F113E /* SearchCityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C903302C972C4D003F113E /* SearchCityViewModel.swift */; };
 		12C903352C972E91003F113E /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C903342C972E91003F113E /* Error.swift */; };
+		12C9033F2C976596003F113E /* CoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C9033E2C976596003F113E /* CoordinatorType.swift */; };
+		12C903412C976E00003F113E /* DependeciesAttachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C903402C976E00003F113E /* DependeciesAttachable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +112,8 @@
 		12C9032E2C972784003F113E /* CoordinatorTransitable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorTransitable.swift; sourceTree = "<group>"; };
 		12C903302C972C4D003F113E /* SearchCityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityViewModel.swift; sourceTree = "<group>"; };
 		12C903342C972E91003F113E /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		12C9033E2C976596003F113E /* CoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorType.swift; sourceTree = "<group>"; };
+		12C903402C976E00003F113E /* DependeciesAttachable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependeciesAttachable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +332,7 @@
 			children = (
 				12C902F62C956876003F113E /* InputOutputAttachable.swift */,
 				12C902F82C956906003F113E /* ViewModelCoordinatable.swift */,
+				12C903402C976E00003F113E /* DependeciesAttachable.swift */,
 				12C903012C956AC6003F113E /* ViewModelType.swift */,
 			);
 			path = Protocol;
@@ -337,6 +342,7 @@
 			isa = PBXGroup;
 			children = (
 				12C9032E2C972784003F113E /* CoordinatorTransitable.swift */,
+				12C9033E2C976596003F113E /* CoordinatorType.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -449,12 +455,14 @@
 				12C9032D2C97274B003F113E /* AppScene.swift in Sources */,
 				122505CF2C94A7550081717B /* NetworkService.swift in Sources */,
 				12C9031C2C96ED21003F113E /* ForecaseWeatherResponse.swift in Sources */,
+				12C9033F2C976596003F113E /* CoordinatorType.swift in Sources */,
 				125D1ACB2C944F310008AA23 /* OneCallWeatherDetail.swift in Sources */,
 				125D1AD42C9453780008AA23 /* SearchView.swift in Sources */,
 				12C9031E2C96EE3B003F113E /* ForecaseWeather.swift in Sources */,
 				12C903222C9709B9003F113E /* DailyTemperature.swift in Sources */,
 				122505C82C94A6E30081717B /* WeatherUsecase.swift in Sources */,
 				12C903192C96EA18003F113E /* Cloud.swift in Sources */,
+				12C903412C976E00003F113E /* DependeciesAttachable.swift in Sources */,
 				125D1ABC2C944E000008AA23 /* WeatherHomeView.swift in Sources */,
 				12C903022C956AC6003F113E /* ViewModelType.swift in Sources */,
 				129616BE2C9486C6009A9E84 /* City.swift in Sources */,

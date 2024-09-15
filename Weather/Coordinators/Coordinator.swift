@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-class Coordinator: CoordinatorTransitable {
+class Coordinator: CoordinatorType {
+    
     @Published public var path: NavigationPath = NavigationPath()
     
-    private let initialScene: AppScene
+    var initialScene: AppScene
     
     public init(_ initialScene: AppScene) {
         self.initialScene = initialScene
@@ -21,28 +22,24 @@ class Coordinator: CoordinatorTransitable {
       }
     
     func buildScene(scene: AppScene) -> some View {
-        print("buildScene \(scene)")
         switch scene {
         case .weatherHome(let coord):
             
             let repository = WeatherRepository()
             let usecase = WeatherUsecase(repository: repository)
-            let viewModel = WeatherHomeViewModel(usecase: usecase, coordinator: self)
+            let dependency = WeatherHomeViewModel.Dependency(geocoord: coord)
+            let viewModel = WeatherHomeViewModel(usecase: usecase,
+                                                 dependency: dependency,
+                                                 coordinator: self)
+            
+            return AnyView(WeatherHomeView(viewModel: viewModel))
 
-            return AnyView(WeatherHomeView(viewModel: viewModel)
-                .onAppear {
-                    viewModel.input.fetchData.send(GeoCoordinate(lat: coord.lat, lon: coord.lon))
-                })
-                
         case .searchCityList:
             let repository = CityListRepository()
             let usecase = CityListUsecase(repository: repository)
             let viewModel = SearchCityViewModel(usecase: usecase, coordinator: self)
-            return AnyView(SearchCitiyView(viewModel: viewModel)
-                .onAppear {
-                    viewModel.input.fetchData.send(())
-                })
             
+            return AnyView(SearchCitiyView(viewModel: viewModel))
         }
     }
 }

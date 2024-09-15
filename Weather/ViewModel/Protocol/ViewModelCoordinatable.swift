@@ -8,6 +8,6 @@
 import Combine
 
 protocol ViewModelCoordinatable {
-    var coordinator: any CoordinatorTransitable { get set }
+    var coordinator: any CoordinatorType { get set }
 }
 

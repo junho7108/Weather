@@ -30,18 +30,28 @@ final class WeatherHomeViewModel: ViewModelType {
         var dailyTempList: [DailyTemperature]? = nil
     }
     
+    struct Dependency {
+        var geocoord: GeoCoordinate
+    }
+    
     let input: Input
     
     @Published var output: Output
+    
+    var dependency: Dependency?
 
-    var coordinator: any CoordinatorTransitable
+    var coordinator: any CoordinatorType
     
     var cancellables: Set<AnyCancellable> = .init()
     
     private let usecase: WeatherUsecase
+    
+    private var hasFetchedData = false
 
-    init(usecase: WeatherUsecase, coordinator: any CoordinatorTransitable) {
+    init(usecase: WeatherUsecase, dependency: Dependency, coordinator: any CoordinatorType) {
         self.usecase = usecase
+        
+        self.dependency = dependency
         
         self.coordinator = coordinator
     
@@ -50,6 +60,11 @@ final class WeatherHomeViewModel: ViewModelType {
         self.output = Output()
         
         transform()
+        
+        defer {
+            self.input.fetchData.send(dependency.geocoord)
+        }
+      
     }
     
     func transform() {
@@ -79,7 +94,7 @@ final class WeatherHomeViewModel: ViewModelType {
             })
             .sink { [weak self] weatherResponse, forecastResponse in
                 guard let self else { return }
-                
+               
                 if let weather = weatherResponse {
                     self.output.response = weather
                     self.output.humidity = "\(weather.main.humidity)%"

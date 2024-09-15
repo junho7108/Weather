@@ -10,8 +10,8 @@ import RxSwift
 
 struct WeatherHomeView: View {
     
-    @StateObject var viewModel: WeatherHomeViewModel
- 
+    @ObservedObject var viewModel: WeatherHomeViewModel
+    
     var body: some View {
         
         ZStack {
@@ -20,11 +20,12 @@ struct WeatherHomeView: View {
                 .ignoresSafeArea()
             
             if viewModel.output.isLoading {
+                
                 Spacer()
                 
                 ProgressView("Loading...")
-                              .progressViewStyle(CircularProgressViewStyle())
-                              .padding()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
                 
                 Spacer()
                 
@@ -33,7 +34,7 @@ struct WeatherHomeView: View {
                     VStack(spacing: 20) {
                         
                         SearchView(viewModel: viewModel)
-                           
+                        
                         CityWeatherView(viewModel: viewModel)
                         
                         HourlyWeatherView(viewModel: viewModel)

@@ -10,16 +10,15 @@ import Combine
 
 @main
 struct WeatherApp: App {
-    @ObservedObject private var coordinator: Coordinator
-    
-    init() {
-        self.coordinator = Coordinator(.weatherHome(coord: GeoCoordinate(lat: 36.783611,
-                                                                         lon: 127.004173)))
-    }
+    @StateObject private var coordinator: Coordinator = Coordinator(
+        .weatherHome(coord: GeoCoordinate(lat: 36.783611,
+                                          lon: 127.004173))
+    )
+
     
     var body: some Scene {
         WindowGroup {
-
+            
             NavigationStack(path: $coordinator.path) {
                 coordinator.buildInitialScene()
                     .navigationDestination(for: AppScene.self) { scene in

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DailyWeatherView: View {
     
-    @StateObject var viewModel: WeatherHomeViewModel
+    @ObservedObject var viewModel: WeatherHomeViewModel
     
     var body: some View {
         if let dailyTemps = viewModel.output.dailyTempList {

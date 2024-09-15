@@ -18,11 +18,15 @@ final class SearchCityViewModel: ViewModelType {
         var cityList: [City]? = nil
     }
     
+    struct Dependency { }
+    
     var input: Input
     
     @Published var output: Output
     
-    var coordinator: any CoordinatorTransitable
+    var dependency: Dependency? = nil
+    
+    var coordinator: any CoordinatorType
     
     let usecase: CityListUsecase
     
@@ -41,6 +45,10 @@ final class SearchCityViewModel: ViewModelType {
         self.output = Output(cityList: [])
         
         transform()
+        
+        defer {
+            self.input.fetchData.send(())
+        }
     }
     
     func transform() {
@@ -58,7 +66,6 @@ final class SearchCityViewModel: ViewModelType {
         input.textDidChange
             .sink { [weak self] text in
                 guard let self else { return }
-                print("🟢 Text \(text)")
                 self.output.cityList = filterCities(cityList: originalCityList,
                                                     searchText: text)
             }

@@ -11,3 +11,5 @@ enum AppScene: Hashable {
     case weatherHome(coord: GeoCoordinate)
     case searchCityList
 }
+
+
