@@ -14,3 +14,4 @@ struct GeoCoordinate: Codable, Identifiable {
     var id: UUID? = UUID()
 }
 
+extension GeoCoordinate: Hashable { }

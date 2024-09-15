@@ -11,7 +11,7 @@ import RxSwift
 struct WeatherHomeView: View {
     
     @StateObject var viewModel: WeatherHomeViewModel
-   
+ 
     var body: some View {
         
         ZStack {
@@ -33,7 +33,7 @@ struct WeatherHomeView: View {
                     VStack(spacing: 20) {
                         
                         SearchView(viewModel: viewModel)
-                        
+                           
                         CityWeatherView(viewModel: viewModel)
                         
                         HourlyWeatherView(viewModel: viewModel)

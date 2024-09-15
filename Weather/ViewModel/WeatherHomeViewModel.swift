@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class WeatherHomeViewModel: ViewModelType {
-    
+   
     struct Input: WeatherInput {
         var fetchData: PassthroughSubject<GeoCoordinate, Never>
     }
@@ -30,28 +30,24 @@ final class WeatherHomeViewModel: ViewModelType {
         var dailyTempList: [DailyTemperature]? = nil
     }
     
-    struct Coordinate: DefaultCoordinate {
-        var showSearchList: PassthroughSubject<Void, Never>
-        var close: PassthroughSubject<Void, Never>
-    }
-    
     let input: Input
+    
     @Published var output: Output
-    var coordinate: Coordinate
+
+    var coordinator: any CoordinatorTransitable
     
     var cancellables: Set<AnyCancellable> = .init()
     
     private let usecase: WeatherUsecase
 
-    init(usecase: WeatherUsecase) {
+    init(usecase: WeatherUsecase, coordinator: any CoordinatorTransitable) {
         self.usecase = usecase
+        
+        self.coordinator = coordinator
     
         self.input = Input(fetchData: PassthroughSubject<GeoCoordinate, Never>())
         
         self.output = Output()
-        
-        self.coordinate = Coordinate(showSearchList: PassthroughSubject<Void, Never>(),
-                                     close: PassthroughSubject<Void, Never>())
         
         transform()
     }

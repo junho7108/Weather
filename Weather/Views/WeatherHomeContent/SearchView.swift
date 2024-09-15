@@ -10,24 +10,31 @@ import SwiftUI
 struct SearchView: View {
     
     @StateObject var viewModel: WeatherHomeViewModel
-    
-    @State var searchText: String = ""
-    
+    @State private var showSearchCityView = false
+  
     var body: some View {
         
-        TextField("search", text: $searchText)
-            .padding(.leading, 60)
-            .frame(height: 40)
-            .background(Color(.systemGray6))
-            .overlay(
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 10)
-                    
-                    Spacer()
-                }
-            )
-            .cornerRadius(12)
+        GeometryReader { geometry in
+                   Button(action: {
+                       viewModel.coordinator.push(.searchCityList)
+                      print("Button Tapped")
+                   }) {
+                       
+                       Image(systemName: "magnifyingglass")
+                           .foregroundColor(.gray)
+                           .padding(.leading, 10)
+                       
+                       HStack(alignment: .center) {
+                           Text("search")
+                               .font(.headline)
+                               .foregroundColor(Color.gray.opacity(0.7))
+                           
+                           Spacer()
+                       }
+                   }
+                   .frame(width: geometry.size.width, height: 32)
+                   .background(Color(.systemGray6))
+                   .cornerRadius(12)
+               }
     }
 }
