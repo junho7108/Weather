@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct WeatherApp: App {
@@ -18,10 +19,12 @@ struct WeatherApp: App {
 //                        .padding()
 //                }
 //            }
-            WeatherHomeView()
-                .onAppear() {
-                   
-                }
+            
+            let repository = WeatherRepository()
+            let usecase = WeatherUsecase(repository: repository)
+            let viewModel = WeatherHomeViewModel(usecase: usecase)
+            
+            WeatherHomeView(viewModel: viewModel)
         }
     }
 }
