@@ -11,6 +11,7 @@ struct DailyTemperature: Identifiable {
     let date: String
     let maxTemp: Double
     let minTemp: Double
+    let icon: String?
     
     var id: UUID = UUID()
 }
