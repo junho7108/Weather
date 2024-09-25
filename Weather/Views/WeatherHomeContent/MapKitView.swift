@@ -9,18 +9,13 @@ import SwiftUI
 import MapKit
 
 struct MapKitView: View {
-    @ObservedObject var viewModel: WeatherHomeViewModel
+    @EnvironmentObject var viewModel: WeatherHomeViewModel
     
     @State private var region: MKCoordinateRegion
     
-    init(viewModel: WeatherHomeViewModel) {
-        _viewModel = ObservedObject(wrappedValue: viewModel)
-        
-        let initialCoord = CLLocationCoordinate2D(latitude: viewModel.output.response?.coord.lat ?? 0,
-                                                  longitude: viewModel.output.response?.coord.lon ?? 0)
-        
+    init() {
         _region = State(initialValue: MKCoordinateRegion(
-            center: initialCoord,
+            center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.5)
         ))
     }
@@ -43,6 +38,12 @@ struct MapKitView: View {
                         .cornerRadius(8)
                         .frame(height: 300)
                         .padding(EdgeInsets(top: 0, leading: 12, bottom: 12, trailing: 12))
+                        .onReceive(viewModel.$output) { output in
+                            if let coord = output.response?.coord {
+                                region.center = CLLocationCoordinate2D(latitude: coord.lat,
+                                                                       longitude: coord.lon)
+                            }
+                        }
                 }
             }
         }

@@ -96,6 +96,7 @@ final class WeatherHomeViewModel: ViewModelType {
                 guard let self else { return }
                
                 if let weather = weatherResponse {
+                    
                     self.output.response = weather
                     self.output.humidity = "\(weather.main.humidity)%"
                     self.output.clouds = "\(weather.clouds.all)%"

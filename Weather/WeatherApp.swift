@@ -18,7 +18,6 @@ struct WeatherApp: App {
     
     var body: some Scene {
         WindowGroup {
-            
             NavigationStack(path: $coordinator.path) {
                 coordinator.buildInitialScene()
                     .navigationDestination(for: AppScene.self) { scene in
