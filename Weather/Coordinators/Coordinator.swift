@@ -11,6 +11,8 @@ class Coordinator: CoordinatorType {
     
     @Published public var path: NavigationPath = NavigationPath()
     
+    private var children: [String: any View] = [:]
+    
     var initialScene: AppScene
     
     public init(_ initialScene: AppScene) {
@@ -22,24 +24,50 @@ class Coordinator: CoordinatorType {
       }
     
     func buildScene(scene: AppScene) -> some View {
+   
         switch scene {
         case .weatherHome(let coord):
+            if let homeView = children[scene.identifier] as? WeatherHomeView {
+                homeView.viewModel.input.fetchData.send((coord))
+                return AnyView(homeView)
+            } else {
+                let homeView = createWeatherHomeView(coord: coord)
+                children[scene.identifier] = homeView
+                return AnyView(homeView)
+            }
             
-            let repository = WeatherRepository()
-            let usecase = WeatherUsecase(repository: repository)
-            let dependency = WeatherHomeViewModel.Dependency(geocoord: coord)
-            let viewModel = WeatherHomeViewModel(usecase: usecase,
-                                                 dependency: dependency,
-                                                 coordinator: self)
             
-            return AnyView(WeatherHomeView(viewModel: viewModel))
-
         case .searchCityList:
-            let repository = CityListRepository()
-            let usecase = CityListUsecase(repository: repository)
-            let viewModel = SearchCityViewModel(usecase: usecase, coordinator: self)
-            
-            return AnyView(SearchCitiyView(viewModel: viewModel))
+            if let searchCityView = children[scene.identifier] as? SearchCityView {
+                return AnyView(searchCityView)
+            } else {
+                let searchCityView = createSearchCityView()
+                children[scene.identifier] = searchCityView
+                return AnyView(searchCityView)
+            }
         }
+    }
+}
+
+private extension Coordinator {
+    func createWeatherHomeView(coord: GeoCoordinate) -> WeatherHomeView {
+        let repository = WeatherRepository()
+        let usecase = WeatherUsecase(repository: repository)
+        let dependency = WeatherHomeViewModel.Dependency(geocoord: coord)
+        let viewModel = WeatherHomeViewModel(usecase: usecase,
+                                             dependency: dependency,
+                                             coordinator: self)
+
+        viewModel.input.fetchData.send(coord)
+        
+        return WeatherHomeView(viewModel: viewModel)
+    }
+    
+    private func createSearchCityView() -> SearchCityView {
+        let repository = CityListRepository()
+        let usecase = CityListUsecase(repository: repository)
+        let viewModel = SearchCityViewModel(usecase: usecase, coordinator: self)
+        
+        return SearchCityView(viewModel: viewModel)
     }
 }

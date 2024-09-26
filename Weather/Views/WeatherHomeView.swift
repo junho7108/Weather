@@ -10,7 +10,7 @@ import RxSwift
 
 struct WeatherHomeView: View {
     
-    @ObservedObject var viewModel: WeatherHomeViewModel
+    @StateObject var viewModel: WeatherHomeViewModel
     
     var body: some View {
         
@@ -33,17 +33,23 @@ struct WeatherHomeView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
                         
-                        SearchView(viewModel: viewModel)
+                        SearchView()
+                            .environmentObject(viewModel)
                         
-                        CityWeatherView(viewModel: viewModel)
+                        CityWeatherView()
+                            .environmentObject(viewModel)
                         
-                        HourlyWeatherView(viewModel: viewModel)
+                        HourlyWeatherView()
+                            .environmentObject(viewModel)
                         
-                        DailyWeatherView(viewModel: viewModel)
+                        DailyWeatherView()
+                            .environmentObject(viewModel)
                         
-                        MapKitView(viewModel: viewModel)
+                        MapKitView()
+                            .environmentObject(viewModel)
                         
-                        WeatherDetailsView(viewModel: viewModel)
+                        WeatherDetailsView()
+                            .environmentObject(viewModel)
                     }
                 }
                 .padding()
