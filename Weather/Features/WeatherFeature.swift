@@ -14,7 +14,8 @@ struct WeatherFeature {
     struct State: Equatable {
         var isLoading: Bool = false
         
-        var cityWeatherState: CityWeatherState? 
+        var searchState: SearchState = .init()
+        var cityWeatherState: CityWeatherState?
         var hourlyWeatherState: HourlyWeatherState?
         var mapkitState: MapKitState?
         var dailyWeatherState: DailyWeatherState?
@@ -22,6 +23,8 @@ struct WeatherFeature {
     }
     
     enum Action {
+        case searchAction(SearchAction)
+        
         case fetchData(coord: GeoCoordinate)
         case weahterResponse(Result<WeatherResponse, Error>)
         case forecastResponse(Result<ForecaseWeatherResponse, Error>)
@@ -33,6 +36,9 @@ struct WeatherFeature {
     
         Reduce { state, action in
             switch action {
+            case .searchAction(let action):
+                return .none
+                
             case .fetchData(let coord):
                 state.isLoading = true
                 
@@ -51,7 +57,6 @@ struct WeatherFeature {
             case .weahterResponse(let result):
                 switch result {
                 case .success(let response):
-                    
                     state.cityWeatherState = CityWeatherState(
                         city: response.name,
                         temp: response.main.temp,
@@ -70,7 +75,7 @@ struct WeatherFeature {
                     )
                     
                 case .failure(let error):
-                    print("🟢 weather error \(error.localizedDescription)")
+                    print("🔴 weather error \(error.localizedDescription)")
                 }
                 
                 return .none
@@ -90,9 +95,9 @@ struct WeatherFeature {
                     state.isLoading = false
                     
                 case .failure(let error):
-                    print("🟢 forecast error \(error.localizedDescription)")
+                    print("🔴forecast error \(error.localizedDescription)")
                 }
-               
+                
                 return .none
             }
         }
@@ -130,7 +135,7 @@ private extension WeatherFeature {
             } else {
                 var currentMax = dailyTemperatures[date]!.max
                 var currentMin = dailyTemperatures[date]!.min
-                var maxIcon = iconFrequency.max(by: { $0.value < $1.value })?.key
+                let maxIcon = iconFrequency.max(by: { $0.value < $1.value })?.key
                 
                 currentMax = max(currentMax, maxTemp)
                 currentMin = min(currentMin, minTemp)

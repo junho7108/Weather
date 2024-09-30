@@ -13,16 +13,11 @@ import ComposableArchitecture
 struct WeatherApp: App {
     var body: some Scene {
         WindowGroup {
-            let store = Store(initialState: WeatherFeature.State()) {
-                WeatherFeature()
-                    ._printChanges()
+            let store = Store(initialState: Coordinator.State()) {
+                Coordinator()
             }
-            WeatherHomeView(store: store)
             
-//            CoordinatorView(store: StoreOf<Coordinator>(
-//                initialState: Coordinator.State(routes: []),
-//                reducer: { Coordinator()})
-//            )
+            CoordinatorView(store: store)
         }
     }
 }

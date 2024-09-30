@@ -16,13 +16,13 @@ struct SearchCityView: View {
     
     var body: some View {
         
+        
         WithViewStore(store, observe: { $0 }) { viewStore in
             ZStack {
                 Color(.blue.opacity(0.35))
                     .ignoresSafeArea()
                 
                 VStack {
-                    
                     TextField("search", text: $searchText)
                         .onChange(of: searchText) { newValue, _  in
                             viewStore.send(.textDidChange(newValue))
@@ -42,8 +42,9 @@ struct SearchCityView: View {
                         .cornerRadius(12)
                         .padding(.bottom)
                     
-                    if !viewStore.cityList.isEmpty {
-                        List(viewStore.cityList) { city in
+                    if let cityList = viewStore.filteredCityList, !cityList.isEmpty {
+                        
+                        List(cityList) { city in
                             Button {
                                 viewStore.send(.didTap(city))
                             } label: {
@@ -61,7 +62,6 @@ struct SearchCityView: View {
                         .listStyle(.plain)
                         .scrollIndicators(.hidden)
                     } else {
-                        
                         Text("검색 된 도시정보가 없습니다.")
                             .padding(.top)
                             .foregroundColor(Color.black.opacity(0.8))
@@ -74,6 +74,9 @@ struct SearchCityView: View {
                 .padding([.top, .leading, .trailing])
             }
             .background(Color.clear)
+        }
+        .onAppear {
+            store.send(.fetchData)
         }
     }
 }

@@ -12,6 +12,8 @@ struct WeatherHomeView: View {
     
     var store: StoreOf<WeatherFeature>
     
+    @State private var isInitialLoad: Bool = true
+   
     var body: some View {
         
         WithViewStore(store, observe: { $0 }) { viewStore in
@@ -35,7 +37,7 @@ struct WeatherHomeView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 20) {
                             
-                            SearchView()
+                            SearchView(store: store.scope(state: \.searchState, action: \.searchAction))
                             
                             IfLetStore(store.scope(state: \.cityWeatherState, action: \.never)) { store in
                                 CityWeatherView(store: store)
@@ -62,8 +64,11 @@ struct WeatherHomeView: View {
                 }
             }
             .onAppear {
-                let coordinate = GeoCoordinate(lat: 37.5665, lon: 126.978)
-                store.send(.fetchData(coord: coordinate))
+                if isInitialLoad {
+                    let coordinate = GeoCoordinate(lat: 37.5665, lon: 126.978)
+                    store.send(.fetchData(coord: coordinate))
+                    isInitialLoad = false
+                }
             }
         }
     }

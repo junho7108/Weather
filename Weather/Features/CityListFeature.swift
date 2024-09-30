@@ -12,7 +12,8 @@ import ComposableArchitecture
 struct CityListFeature {
     
     struct State: Equatable {
-        var cityList: [City]
+        var originCityList: [City]?
+        var filteredCityList: [City]?
     }
     
     enum Action {
@@ -24,32 +25,53 @@ struct CityListFeature {
     
     @Dependency(\.cityListUsecase) var usecase: CityListUsecase
     
-    func reduce(into state: inout State, action: Action) -> Effect<Action> {
-        switch action {
-        case .fetchData:
-            return .run { send in
-                let response = await usecase.fetchCityList()
-                await send(.fetchDataResponse(response))
-            }
-            
-        case .fetchDataResponse(let result):
-            switch result {
-            case .success(let cityList):
-                state.cityList = cityList
+    var body: some Reducer<State, Action> {
+        
+        Reduce { state, action in
+            switch action {
+            case .fetchData:
+                return .run { send in
+                    let response = await usecase.fetchCityList()
+                    await send(.fetchDataResponse(response))
+                }
                 
-            case .failure(let error):
-                print("🟢 cityList Error \(error.localizedDescription)")
-                break
+            case .fetchDataResponse(let result):
+                switch result {
+                case .success(let cityList):
+                    state.originCityList = cityList
+                    state.filteredCityList = cityList
+                    
+                case .failure(let error):
+                    print("🔴 cityList Error \(error.localizedDescription)")
+                    break
+                }
+                
+                return .none
+                
+                
+            case .didTap:
+                return .none
+                
+            case .textDidChange(let text):
+                state.filteredCityList = filterCities(cityList: state.originCityList,
+                                                      searchText: text) ?? []
+                return .none
             }
-            
-            return .none
-            
-            
-        case .didTap(let city):
-            return .none
-            
-        case .textDidChange(let text):
-            return .none
+        }
+    }
+}
+
+private extension CityListFeature {
+    func filterCities(cityList: [City]?, searchText: String) -> [City]? {
+        
+        guard let cityList,
+              !searchText.isEmpty else { return cityList }
+        
+        let lowercasedSearchText = searchText.lowercased()
+        
+        return cityList.filter { city in
+            city.name.lowercased().contains(lowercasedSearchText) ||
+            city.country.lowercased().contains(lowercasedSearchText)
         }
     }
 }

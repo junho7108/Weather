@@ -39,13 +39,11 @@ struct MapKitView: View {
                         .cornerRadius(8)
                         .frame(height: 300)
                         .padding(EdgeInsets(top: 0, leading: 12, bottom: 12, trailing: 12))
-                        .onChange(of: viewStore.coord) { (oldValue, newCoord) in
-                            
-                            print("🟢 old Coord \(oldValue) new Coord \(newCoord)")
-                            
-                            region.center = CLLocationCoordinate2D(latitude: newCoord.lat, longitude: newCoord.lon)
-                        }
                 }
+            }
+            .onAppear {
+                region.center = CLLocationCoordinate2D(latitude: viewStore.coord.lat,
+                                                       longitude: viewStore.coord.lon)
             }
         }
     }

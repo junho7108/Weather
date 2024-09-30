@@ -81,5 +81,3 @@ struct WeatherDetailsView: View {
         }
     }
 }
-
-//MARK: -
