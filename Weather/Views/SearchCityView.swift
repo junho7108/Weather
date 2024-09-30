@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SearchCitiyView: View {
+struct SearchCityView: View {
     
-    @ObservedObject var viewModel: SearchCityViewModel
+    @StateObject var viewModel: SearchCityViewModel
     @State var searchText: String = ""
     
     var body: some View {
@@ -48,7 +48,6 @@ struct SearchCitiyView: View {
                                 viewModel.coordinator.pop()
                                 
                                 viewModel.coordinator.initialScene = .weatherHome(coord: city.coord)
-
                                 
                             } label: {
                                 VStack(alignment: .leading, spacing: 8) {

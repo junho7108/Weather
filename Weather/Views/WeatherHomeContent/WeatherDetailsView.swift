@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeatherDetailsView: View {
-    @ObservedObject var viewModel: WeatherHomeViewModel
+    @EnvironmentObject var viewModel: WeatherHomeViewModel
     
     enum WeatherAttribute: Int, CaseIterable {
         case humidity, cloudiness, windSpeed, pressure

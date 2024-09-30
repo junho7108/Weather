@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DailyWeatherView: View {
     
-    @ObservedObject var viewModel: WeatherHomeViewModel
+    @EnvironmentObject var viewModel: WeatherHomeViewModel
     
     var body: some View {
         if let dailyTemps = viewModel.output.dailyTempList {
@@ -25,7 +25,7 @@ struct DailyWeatherView: View {
                     Divider()
                     
                     ForEach(dailyTemps) { dailyTemp in
-                        createDailyWeahterView(icon: "",
+                        createDailyWeahterView(icon: dailyTemp.icon,
                                                date: dailyTemp.date,
                                                maxTemp: dailyTemp.maxTemp,
                                                minTemp: dailyTemp.minTemp)
@@ -39,7 +39,7 @@ struct DailyWeatherView: View {
 }
 
 private extension DailyWeatherView {
-    func createDailyWeahterView(icon: String, date: String, maxTemp: Double, minTemp: Double) -> some View {
+    func createDailyWeahterView(icon: String?, date: String, maxTemp: Double, minTemp: Double) -> some View {
         
         VStack {
             HStack {
@@ -48,7 +48,7 @@ private extension DailyWeatherView {
                 
                 Spacer()
                 
-                Image(icon)
+                Image(icon ?? "")
                     .resizable()
                     .scaledToFit()
                     .frame(height: 28)

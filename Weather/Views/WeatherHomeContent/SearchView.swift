@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     
-    @ObservedObject var viewModel: WeatherHomeViewModel
+    @EnvironmentObject var viewModel: WeatherHomeViewModel
     @State private var showSearchCityView = false
   
     var body: some View {

@@ -96,6 +96,7 @@ final class WeatherHomeViewModel: ViewModelType {
                 guard let self else { return }
                
                 if let weather = weatherResponse {
+                    
                     self.output.response = weather
                     self.output.humidity = "\(weather.main.humidity)%"
                     self.output.clouds = "\(weather.clouds.all)%"
@@ -121,29 +122,43 @@ extension WeatherHomeViewModel {
     }
     
     func getDailyTemperatures(with response: ForecaseWeatherResponse) -> [DailyTemperature] {
-        var dailyTemperatures: [String: (max: Double, min: Double)] = [:]
-
+        var dailyTemperatures: [String: (max: Double, min: Double, icon: String?)] = [:]
+        
+        
         for item in response.list {
+            var iconFrequency: [String: Int] = [:]
+            
             let date = String(item.date.prefix(10))
             let minTemp = item.main.minTemp
             let maxTemp = item.main.maxTemp
+            let icon = item.weather.first?.icon
+            
+            if let icon = item.weather.first?.icon {
+                if iconFrequency[date] == nil {
+                    iconFrequency[icon] = 1
+                } else {
+                    iconFrequency[icon]! += 1
+                }
+            }
             
             if dailyTemperatures[date] == nil {
-                dailyTemperatures[date] = (max: maxTemp, min: minTemp)
+                dailyTemperatures[date] = (max: maxTemp, min: minTemp, icon: icon)
             } else {
                 var currentMax = dailyTemperatures[date]!.max
                 var currentMin = dailyTemperatures[date]!.min
+                var maxIcon = iconFrequency.max(by: { $0.value < $1.value })?.key
                 
                 currentMax = max(currentMax, maxTemp)
                 currentMin = min(currentMin, minTemp)
                 
-                dailyTemperatures[date] = (max: currentMax, min: currentMin)
+                dailyTemperatures[date] = (max: currentMax, min: currentMin, icon: maxIcon)
             }
         }
         
         let result = dailyTemperatures.map { DailyTemperature(date: $0.key,
                                                               maxTemp: $0.value.max,
-                                                              minTemp: $0.value.min) }
+                                                              minTemp: $0.value.min, 
+                                                              icon: $0.value.icon) }
             .sorted(by: { $0.date < $1.date })
 
         return result.count > 5 ? Array(result[0 ..< 5]) : result
