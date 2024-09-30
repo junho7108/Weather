@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct DailyWeatherState: Equatable {
-    var dailyTempList: [DailyTemperature] = []
+    var dailyTempList: [DailyTemperature]
 }
 
 struct DailyWeatherView: View {

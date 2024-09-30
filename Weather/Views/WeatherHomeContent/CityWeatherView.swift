@@ -9,11 +9,11 @@ import SwiftUI
 import ComposableArchitecture
 
 struct CityWeatherState: Equatable {
-    var city: String = ""
-    var temp: Double = 0
+    var city: String
+    var temp: Double
     var description: String?
-    var tempMax: Double = 0
-    var tempMin: Double = 0
+    var tempMax: Double
+    var tempMin: Double
 }
 
 struct CityWeatherView: View {

@@ -10,7 +10,7 @@ import MapKit
 import ComposableArchitecture
 
 struct MapKitState: Equatable {
-    var coord: GeoCoordinate = .init(lat: 0, lon: 0)
+    var coord: GeoCoordinate
 }
 
 struct MapKitView: View {

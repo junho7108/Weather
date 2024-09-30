@@ -36,32 +36,26 @@ struct WeatherHomeView: View {
                         VStack(spacing: 20) {
                             
                             SearchView()
-                        
-                            CityWeatherView(
-                                store: store.scope(state: \.cityWeatherState,
-                                                   action: \.never)
-                            )
-                               
-                            HourlyWeatherView(
-                                store: store.scope(state: \.hourlyWeatherState,
-                                                   action: \.never)
-                            )
-                               
-                            DailyWeatherView(
-                                store: store.scope(state: \.dailyWeatherState,
-                                                   action: \.never)
-                            )
-                               
-                            MapKitView(
-                                store: store.scope(state: \.mapkitState,
-                                                   action: \.never)
-                            )
-                               
-                            WeatherDetailsView(
-                                store: store.scope(state: \.weatherDetailState,
-                                                   action: \.never)
-                            )
+                            
+                            IfLetStore(store.scope(state: \.cityWeatherState, action: \.never)) { store in
+                                CityWeatherView(store: store)
+                            }
                               
+                            IfLetStore(store.scope(state: \.hourlyWeatherState, action: \.never)) { store in
+                                HourlyWeatherView(store: store)
+                            }
+                                        
+                            IfLetStore(store.scope(state: \.dailyWeatherState, action: \.never)) { store in
+                                DailyWeatherView(store: store)
+                            }
+                                  
+                            IfLetStore(store.scope(state: \.mapkitState, action: \.never)) { store in
+                                MapKitView(store: store)
+                            }
+                               
+                            IfLetStore(store.scope(state: \.weatherDetailState, action: \.never)) { store in
+                                WeatherDetailsView(store: store)
+                            }
                         }
                     }
                     .padding()

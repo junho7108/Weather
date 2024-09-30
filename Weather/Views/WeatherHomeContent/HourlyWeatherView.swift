@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 struct HourlyWeatherState: Equatable {
-    var threeHourlyForecast: [ForecaseWeather] = []
+    var threeHourlyForecast: [ForecaseWeather]
 }
 
 struct HourlyWeatherView: View,

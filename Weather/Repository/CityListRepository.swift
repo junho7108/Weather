@@ -8,10 +8,23 @@
 import Combine
 
 protocol CityListRepositoryType {
+    func fetchCityList() async -> Result<[City], Error>
     func fetchCityList() -> AnyPublisher<[City], Error>
 }
 
 struct CityListRepository: CityListRepositoryType {
+    func fetchCityList() async -> Result<[City], any Error> {
+        if let jsonData = FileService.shared.loadJSONFromFile(filename: "citylist") {
+            if let cities = FileService.shared.parse(data: jsonData, modelType: [City].self) {
+                return .success(cities)
+            } else {
+                return .failure(FileError.parsingFailed)
+            }
+        } else {
+            return .failure(FileError.fileNotFound)
+        }
+    }
+    
     func fetchCityList() -> AnyPublisher<[City], Error> {
             Future<[City], Error> { promise in
                 if let jsonData = FileService.shared.loadJSONFromFile(filename: "citylist") {

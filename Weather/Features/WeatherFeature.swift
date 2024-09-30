@@ -14,11 +14,11 @@ struct WeatherFeature {
     struct State: Equatable {
         var isLoading: Bool = false
         
-        var cityWeatherState: CityWeatherState = .init()
-        var hourlyWeatherState: HourlyWeatherState = .init()
-        var mapkitState: MapKitState = .init()
-        var dailyWeatherState: DailyWeatherState = .init()
-        var weatherDetailState: WeatherDetailState = .init()
+        var cityWeatherState: CityWeatherState? 
+        var hourlyWeatherState: HourlyWeatherState?
+        var mapkitState: MapKitState?
+        var dailyWeatherState: DailyWeatherState?
+        var weatherDetailState: WeatherDetailState?
     }
     
     enum Action {

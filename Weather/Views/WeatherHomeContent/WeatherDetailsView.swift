@@ -9,10 +9,10 @@ import SwiftUI
 import ComposableArchitecture
 
 struct WeatherDetailState: Equatable {
-    var humidity: Int = 0
-    var clouds: Int = 0
-    var windSpeed: Double = 0
-    var pressure: Int = 0
+    var humidity: Int
+    var clouds: Int
+    var windSpeed: Double
+    var pressure: Int
 }
 
 struct WeatherDetailsView: View {
