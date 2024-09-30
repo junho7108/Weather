@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ForecaseWeather: Codable, Identifiable {
+struct ForecaseWeather: Codable, Identifiable, Equatable {
     let main: WeatherDetail
     let weather: [Weather]
     let clouds: Cloud

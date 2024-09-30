@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct Cloud: Codable {
+struct Cloud: Codable, Equatable {
     let all: Int
 }

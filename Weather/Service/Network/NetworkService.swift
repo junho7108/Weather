@@ -27,6 +27,24 @@ class NetworkService: NSObject {
     }
     
     func sendGet<T: Decodable>(with url: String,
+                               parameters: Parameters? = nil) async -> Result<T, Error> {
+        let task = session.request(url,
+                   method: .get,
+                   parameters: parameters,
+                   headers: headers)
+        .serializingDecodable(T.self)
+        
+        let response = await task.response
+           
+        switch response.result {
+        case .success(let model):
+            return .success(model)
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
+    func sendGet<T: Decodable>(with url: String,
                                parameters: Parameters? = nil,
                                completion: @escaping (Result<T, Error>) -> Void) {
         session.request(url,

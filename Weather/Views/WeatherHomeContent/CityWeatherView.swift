@@ -6,34 +6,47 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct CityWeatherState: Equatable {
+    var city: String = ""
+    var temp: Double = 0
+    var description: String?
+    var tempMax: Double = 0
+    var tempMin: Double = 0
+}
 
 struct CityWeatherView: View {
-    @EnvironmentObject var viewModel: WeatherHomeViewModel
+    
+    let store: Store<CityWeatherState, Never>
     
     var body: some View {
         
-        VStack(spacing: 8) {
-            if let response = viewModel.output.response {
-                Text(response.name)
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            VStack(spacing: 8) {
+                
+                Text(viewStore.city)
                     .font(.system(size: 32))
                     .foregroundColor(.black)
                 
-                Text(response.main.temp.kelvinToCelsiusString())
+                Text(viewStore.temp.kelvinToCelsiusString())
                     .font(.system(size: 48))
                     .foregroundStyle(.black)
                 
-                Text(response.weather.first?.main.description ?? "")
-                    .font(.system(size: 28))
-                
+                if let description = viewStore.description {
+                    Text(description)
+                        .font(.system(size: 28))
+                }
+              
                 HStack {
-                    Text("최고: \(response.main.maxTemp.kelvinToCelsiusString())")
+                    Text("최고: \(viewStore.tempMax.kelvinToCelsiusString())")
                         .font(.system(size: 20))
                     
                     Divider()
                         .frame(width: 2)
                         .background(.black)
                     
-                    Text("최저: \(response.main.minTemp.kelvinToCelsiusString())")
+                    Text("최저: \(viewStore.tempMin.kelvinToCelsiusString())")
                         .font(.system(size: 20))
                 }
             }

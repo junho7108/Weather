@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DailyTemperature: Identifiable {
+struct DailyTemperature: Identifiable, Equatable {
     let date: String
     let maxTemp: Double
     let minTemp: Double

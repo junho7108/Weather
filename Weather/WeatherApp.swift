@@ -7,23 +7,22 @@
 
 import SwiftUI
 import Combine
+import ComposableArchitecture
 
 @main
 struct WeatherApp: App {
-    @StateObject private var coordinator: Coordinator = Coordinator(
-        .weatherHome(coord: GeoCoordinate(lat: 36.783611,
-                                          lon: 127.004173))
-    )
-
-    
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $coordinator.path) {
-                coordinator.buildInitialScene()
-                    .navigationDestination(for: AppScene.self) { scene in
-                        coordinator.buildScene(scene: scene)
-                    }
+            let store = Store(initialState: WeatherFeature.State()) {
+                WeatherFeature()
+                    ._printChanges()
             }
+            WeatherHomeView(store: store)
+            
+//            CoordinatorView(store: StoreOf<Coordinator>(
+//                initialState: Coordinator.State(routes: []),
+//                reducer: { Coordinator()})
+//            )
         }
     }
 }

@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct HourlyWeatherState: Equatable {
+    var threeHourlyForecast: [ForecaseWeather] = []
+}
 
 struct HourlyWeatherView: View,
                           DateFormatterProtocol {
     
-    @EnvironmentObject var viewModel: WeatherHomeViewModel
+    let store: Store<HourlyWeatherState, Never>
     
     var body: some View {
-        if let list = viewModel.output.threeHourlyForecast {
-            
+        
+        WithViewStore(store, observe: { $0 }) { viewStore in
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(.blue.opacity(0.3))
@@ -28,7 +33,7 @@ struct HourlyWeatherView: View,
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(list) { forecast in
+                            ForEach(viewStore.threeHourlyForecast) { forecast in
                                 createHourlyWeahterView(icon: forecast.weather.first!.icon,
                                                         hour: formatDateString(forecast.date) ?? forecast.date,
                                                         temp: forecast.main.temp.kelvinToCelsiusString())
@@ -39,7 +44,6 @@ struct HourlyWeatherView: View,
                 .padding(8)
             }
             .fixedSize(horizontal: false, vertical: true)
-            
         }
     }
 }

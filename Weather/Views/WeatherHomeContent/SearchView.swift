@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct SearchView: View {
-    
-    @EnvironmentObject var viewModel: WeatherHomeViewModel
+  
     @State private var showSearchCityView = false
   
     var body: some View {
         
         GeometryReader { geometry in
                    Button(action: {
-                       viewModel.coordinator.push(.searchCityList)
+//                       viewModel.coordinator.push(.searchCityList)
                       print("Button Tapped")
                    }) {
                        

@@ -6,49 +6,46 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct SearchCityView: View {
     
-    @StateObject var viewModel: SearchCityViewModel
+    let store: StoreOf<CityListFeature>
+    
     @State var searchText: String = ""
     
     var body: some View {
-        ZStack {
-            Color(.blue.opacity(0.35))
-                .ignoresSafeArea()
-            
-            VStack {
-            
-                TextField("search", text: $searchText)
-                    .onChange(of: searchText) { newValue, _  in
-                        viewModel.input.textDidChange
-                            .send(newValue)
-                    }
-                    .padding(.leading, 60)
-                    .frame(height: 40)
-                    .background(Color(.systemGray6))
-                    .overlay(
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.gray)
-                                .padding(.leading, 10)
-                            
-                            Spacer()
-                        }
-                    )
-                    .cornerRadius(12)
-                    .padding(.bottom)
+        
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            ZStack {
+                Color(.blue.opacity(0.35))
+                    .ignoresSafeArea()
                 
-                if let cityList = viewModel.output.cityList, !cityList.isEmpty {
+                VStack {
                     
-                        List(cityList) { city in
-                            
+                    TextField("search", text: $searchText)
+                        .onChange(of: searchText) { newValue, _  in
+                            viewStore.send(.textDidChange(newValue))
+                        }
+                        .padding(.leading, 60)
+                        .frame(height: 40)
+                        .background(Color(.systemGray6))
+                        .overlay(
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.gray)
+                                    .padding(.leading, 10)
+                                
+                                Spacer()
+                            }
+                        )
+                        .cornerRadius(12)
+                        .padding(.bottom)
+                    
+                    if !viewStore.cityList.isEmpty {
+                        List(viewStore.cityList) { city in
                             Button {
-                                
-                                viewModel.coordinator.pop()
-                                
-                                viewModel.coordinator.initialScene = .weatherHome(coord: city.coord)
-                                
+                                viewStore.send(.didTap(city))
                             } label: {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(city.name)
@@ -63,20 +60,20 @@ struct SearchCityView: View {
                         .cornerRadius(12)
                         .listStyle(.plain)
                         .scrollIndicators(.hidden)
-                } else {
-                    
-                    Text("검색 된 도시정보가 없습니다.")
-                        .padding(.top)
-                        .foregroundColor(Color.black.opacity(0.8))
-                        .font(.system(size: 16))
-                    
-                    Spacer()
+                    } else {
+                        
+                        Text("검색 된 도시정보가 없습니다.")
+                            .padding(.top)
+                            .foregroundColor(Color.black.opacity(0.8))
+                            .font(.system(size: 16))
+                        
+                        Spacer()
+                    }
                 }
+                .background(Color.clear)
+                .padding([.top, .leading, .trailing])
             }
             .background(Color.clear)
-            .padding([.top, .leading, .trailing])
-          
         }
-        .background(Color.clear)
     }
 }

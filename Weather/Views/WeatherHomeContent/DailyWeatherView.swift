@@ -6,14 +6,19 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct DailyWeatherState: Equatable {
+    var dailyTempList: [DailyTemperature] = []
+}
 
 struct DailyWeatherView: View {
     
-    @EnvironmentObject var viewModel: WeatherHomeViewModel
-    
+    let store: Store<DailyWeatherState, Never>
+
     var body: some View {
-        if let dailyTemps = viewModel.output.dailyTempList {
-            
+        
+        WithViewStore(store, observe: { $0 }) { viewStore in
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(.blue.opacity(0.3))
@@ -24,7 +29,7 @@ struct DailyWeatherView: View {
                     
                     Divider()
                     
-                    ForEach(dailyTemps) { dailyTemp in
+                    ForEach(viewStore.dailyTempList) { dailyTemp in
                         createDailyWeahterView(icon: dailyTemp.icon,
                                                date: dailyTemp.date,
                                                maxTemp: dailyTemp.maxTemp,
@@ -32,7 +37,6 @@ struct DailyWeatherView: View {
                     }
                 }
                 .padding(8)
-                
             }
         }
     }

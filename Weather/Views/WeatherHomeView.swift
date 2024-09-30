@@ -6,53 +6,70 @@
 //
 
 import SwiftUI
-import RxSwift
+import ComposableArchitecture
 
 struct WeatherHomeView: View {
     
-    @StateObject var viewModel: WeatherHomeViewModel
+    var store: StoreOf<WeatherFeature>
     
     var body: some View {
         
-        ZStack {
+        WithViewStore(store, observe: { $0 }) { viewStore in
             
-            Color(.blue.opacity(0.35))
-                .ignoresSafeArea()
-            
-            if viewModel.output.isLoading {
+            ZStack {
                 
-                Spacer()
+                Color(.blue.opacity(0.35))
+                    .ignoresSafeArea()
                 
-                ProgressView("Loading...")
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
-                
-                Spacer()
-                
-            } else {
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 20) {
+                if viewStore.state.isLoading {
+                    
+                    Spacer()
+                    
+                    ProgressView("Loading...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                    
+                    Spacer()
+                    
+                } else {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 20) {
+                            
+                            SearchView()
                         
-                        SearchView()
-                            .environmentObject(viewModel)
-                        
-                        CityWeatherView()
-                            .environmentObject(viewModel)
-                        
-                        HourlyWeatherView()
-                            .environmentObject(viewModel)
-                        
-                        DailyWeatherView()
-                            .environmentObject(viewModel)
-                        
-                        MapKitView()
-                            .environmentObject(viewModel)
-                        
-                        WeatherDetailsView()
-                            .environmentObject(viewModel)
+                            CityWeatherView(
+                                store: store.scope(state: \.cityWeatherState,
+                                                   action: \.never)
+                            )
+                               
+                            HourlyWeatherView(
+                                store: store.scope(state: \.hourlyWeatherState,
+                                                   action: \.never)
+                            )
+                               
+                            DailyWeatherView(
+                                store: store.scope(state: \.dailyWeatherState,
+                                                   action: \.never)
+                            )
+                               
+                            MapKitView(
+                                store: store.scope(state: \.mapkitState,
+                                                   action: \.never)
+                            )
+                               
+                            WeatherDetailsView(
+                                store: store.scope(state: \.weatherDetailState,
+                                                   action: \.never)
+                            )
+                              
+                        }
                     }
+                    .padding()
                 }
-                .padding()
+            }
+            .onAppear {
+                let coordinate = GeoCoordinate(lat: 37.5665, lon: 126.978)
+                store.send(.fetchData(coord: coordinate))
             }
         }
     }

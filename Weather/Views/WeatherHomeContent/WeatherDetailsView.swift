@@ -6,9 +6,18 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
+
+struct WeatherDetailState: Equatable {
+    var humidity: Int = 0
+    var clouds: Int = 0
+    var windSpeed: Double = 0
+    var pressure: Int = 0
+}
 
 struct WeatherDetailsView: View {
-    @EnvironmentObject var viewModel: WeatherHomeViewModel
+
+    let store: Store<WeatherDetailState, Never>
     
     enum WeatherAttribute: Int, CaseIterable {
         case humidity, cloudiness, windSpeed, pressure
@@ -24,12 +33,13 @@ struct WeatherDetailsView: View {
     }
 
     var body: some View {
-        if let response = viewModel.output.response {
+        
+        WithViewStore(store, observe: { $0 }) { viewStore in
             let columns = [
-                   GridItem(.flexible()),
-                   GridItem(.flexible())
-               ]
-           
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ]
+            
             LazyVGrid(columns: columns) {
                 ForEach(0 ..< WeatherAttribute.allCases.count) { index in
                     if let attribute = WeatherAttribute(rawValue: index) {
@@ -43,22 +53,22 @@ struct WeatherDetailsView: View {
                                     .font(.system(size: 12))
                                 
                                 Spacer()
-  
+                                
                                 switch attribute {
                                 case .humidity:
-                                    Text(viewModel.output.humidity ?? "")
+                                    Text("\(viewStore.humidity)%")
                                         .font(.system(size: 24))
                                 case .cloudiness:
-                                    Text(viewModel.output.clouds ?? "")
+                                    Text("\(viewStore.clouds)%")
                                         .font(.system(size: 24))
                                 case .windSpeed:
-                                    Text(viewModel.output.windSpeed ?? "")
+                                    Text("\(viewStore.windSpeed)m/s")
                                         .font(.system(size: 24))
                                 case .pressure:
-                                    Text(viewModel.output.pressure ?? "")
+                                    Text("\(viewStore.pressure)hpa")
                                         .font(.system(size: 24))
                                 }
-                               
+                                
                                 Spacer()
                             }
                             .padding()
@@ -68,7 +78,6 @@ struct WeatherDetailsView: View {
                     }
                 }
             }
-            
         }
     }
 }

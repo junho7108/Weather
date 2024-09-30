@@ -7,21 +7,22 @@
 
 import SwiftUI
 import MapKit
+import ComposableArchitecture
+
+struct MapKitState: Equatable {
+    var coord: GeoCoordinate = .init(lat: 0, lon: 0)
+}
 
 struct MapKitView: View {
-    @EnvironmentObject var viewModel: WeatherHomeViewModel
     
-    @State private var region: MKCoordinateRegion
+    let store: Store<MapKitState, Never>
     
-    init() {
-        _region = State(initialValue: MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.5)
-        ))
-    }
+    @State private var region: MKCoordinateRegion = .init(center: .init(latitude: 37.5665,
+                                                                        longitude: 126.978),
+                                                          span: .init(latitudeDelta: 0.05, longitudeDelta: 0.5))
     
     var body: some View {
-        if let res = viewModel.output.response {
+        WithViewStore(store, observe: { $0 }) { viewStore in
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(.blue.opacity(0.3))
@@ -32,17 +33,17 @@ struct MapKitView: View {
                         .padding(EdgeInsets(top: 12, leading: 12, bottom: 0, trailing: 0))
                     
                     Map(coordinateRegion: $region,
-                        annotationItems: [res.coord]) { coord in
+                        annotationItems: [viewStore.coord]) { coord in
                         MapPin(coordinate: .init(latitude: coord.lat, longitude: coord.lon), tint: .red)
                     }
                         .cornerRadius(8)
                         .frame(height: 300)
                         .padding(EdgeInsets(top: 0, leading: 12, bottom: 12, trailing: 12))
-                        .onReceive(viewModel.$output) { output in
-                            if let coord = output.response?.coord {
-                                region.center = CLLocationCoordinate2D(latitude: coord.lat,
-                                                                       longitude: coord.lon)
-                            }
+                        .onChange(of: viewStore.coord) { (oldValue, newCoord) in
+                            
+                            print("🟢 old Coord \(oldValue) new Coord \(newCoord)")
+                            
+                            region.center = CLLocationCoordinate2D(latitude: newCoord.lat, longitude: newCoord.lon)
                         }
                 }
             }
